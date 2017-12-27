@@ -1,5 +1,5 @@
 
-package com.defaultapps.android_cryptocurrency_prices.models;
+package com.defaultapps.android_cryptocurrency_prices.data.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

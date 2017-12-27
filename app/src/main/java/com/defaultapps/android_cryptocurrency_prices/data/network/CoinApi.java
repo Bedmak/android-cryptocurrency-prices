@@ -1,6 +1,6 @@
-package com.defaultapps.android_cryptocurrency_prices.network;
+package com.defaultapps.android_cryptocurrency_prices.data.network;
 
-import com.defaultapps.android_cryptocurrency_prices.models.ResponseFileModel;
+import com.defaultapps.android_cryptocurrency_prices.data.models.ResponseFileModel;
 
 import java.util.List;
 

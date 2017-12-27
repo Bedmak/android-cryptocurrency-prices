@@ -2,7 +2,7 @@ package com.defaultapps.android_cryptocurrency_prices;
 
 import android.app.Application;
 
-import com.defaultapps.android_cryptocurrency_prices.network.NetworkService;
+import com.defaultapps.android_cryptocurrency_prices.data.network.NetworkService;
 
 public class App extends Application {
 
@@ -11,10 +11,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        networkService = new NetworkService();
     }
 
-    public NetworkService getNetworkService() {
-        return networkService;
-    }
 }
