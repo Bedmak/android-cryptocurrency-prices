@@ -11,16 +11,16 @@ import com.defaultapps.android_cryptocurrency_prices.R;
 public class MainActivity extends AppCompatActivity implements View {
 
     TextView responseView;
-    private ResponsePresenterImpl pressenter;
+    private ResponsePresenterImpl presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         responseView = findViewById(R.id.text_view);
-        pressenter = new ResponsePresenterImpl();
-        pressenter.onAttach(this);
-        pressenter.overview();
+        presenter = new ResponsePresenterImpl();
+        presenter.onAttach(this);
+        presenter.overview();
 
     }
 
@@ -32,6 +32,6 @@ public class MainActivity extends AppCompatActivity implements View {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        pressenter.onDetach();
+        presenter.onDetach();
     }
 }

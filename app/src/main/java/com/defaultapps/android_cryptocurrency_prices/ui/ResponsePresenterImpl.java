@@ -5,21 +5,16 @@ import android.util.Log;
 import com.defaultapps.android_cryptocurrency_prices.data.models.ResponseFileModel;
 import com.defaultapps.android_cryptocurrency_prices.data.overview.CryptocurrencyOverviewImpl;
 
-import org.reactivestreams.Subscriber;
-
 import java.util.List;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class ResponsePresenterImpl implements ResponsePresenter {
+public class ResponsePresenterImpl implements ResponsePresenter {                                   // MVP - Presenter
 
-    private CryptocurrencyOverviewImpl cryptoOverview = new CryptocurrencyOverviewImpl(); // MVP - Model
+    private CryptocurrencyOverviewImpl cryptoOverview = new CryptocurrencyOverviewImpl();           // MVP - Model
 
-    private View view;  // MVP - View - MainActivity
+    private View view;                                                                              // MVP - View - MainActivity
 
     @Override
     public void onAttach(View view) {
