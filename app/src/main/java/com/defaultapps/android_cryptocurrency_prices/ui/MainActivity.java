@@ -28,4 +28,10 @@ public class MainActivity extends AppCompatActivity implements View {
     public void showCoin(String coin) {
         responseView.setText(coin);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        pressenter.onDetach();
+    }
 }
