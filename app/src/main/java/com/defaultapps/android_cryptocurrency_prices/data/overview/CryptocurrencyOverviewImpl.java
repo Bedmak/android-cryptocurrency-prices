@@ -6,7 +6,9 @@ import com.defaultapps.android_cryptocurrency_prices.data.network.NetworkService
 
 import java.util.List;
 
-import retrofit2.Callback;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class CryptocurrencyOverviewImpl implements CryptocurrencyOverview {
@@ -14,7 +16,9 @@ public class CryptocurrencyOverviewImpl implements CryptocurrencyOverview {
     CoinApi ns = NetworkService.getCoinApi();
 
     @Override
-    public void getCoins(Callback<List<ResponseFileModel>> callback) {
-        ns.getListCryptocurrency(1).enqueue(callback);
+    public Single<List<ResponseFileModel>> getCoins() {
+        return ns.getListCryptocurrency(1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

@@ -4,8 +4,10 @@ import com.defaultapps.android_cryptocurrency_prices.data.models.ResponseFileMod
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 public interface CryptocurrencyOverview {
 
-    void getCoins(retrofit2.Callback<List<ResponseFileModel>> callback);
+    Single<List<ResponseFileModel>> getCoins();
 
 }

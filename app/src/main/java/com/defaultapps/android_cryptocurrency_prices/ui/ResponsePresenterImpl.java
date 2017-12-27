@@ -1,10 +1,16 @@
 package com.defaultapps.android_cryptocurrency_prices.ui;
 
+import android.util.Log;
+
 import com.defaultapps.android_cryptocurrency_prices.data.models.ResponseFileModel;
 import com.defaultapps.android_cryptocurrency_prices.data.overview.CryptocurrencyOverviewImpl;
 
+import org.reactivestreams.Subscriber;
+
 import java.util.List;
 
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,18 +28,22 @@ public class ResponsePresenterImpl implements ResponsePresenter {
 
     @Override
     public void overview() {
-        cryptoOverview.getCoins(new Callback<List<ResponseFileModel>>() {
+        cryptoOverview.getCoins().subscribe(new SingleObserver<List<ResponseFileModel>>() {
             @Override
-            public void onResponse(Call<List<ResponseFileModel>> call, Response<List<ResponseFileModel>> response) {
-                List<ResponseFileModel> coins = response.body();
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onSuccess(List<ResponseFileModel> coins) {
                 if (coins != null && !coins.isEmpty()) {
                     view.showCoin(coins.get(0).getName() + " - " + coins.get(0).getPriceUsd());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<ResponseFileModel>> call, Throwable t) {
-
+            public void onError(Throwable e) {
+                Log.e("Response", "error - ", e);
             }
         });
     }
