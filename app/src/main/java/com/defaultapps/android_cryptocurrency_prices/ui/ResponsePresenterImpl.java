@@ -1,8 +1,5 @@
 package com.defaultapps.android_cryptocurrency_prices.ui;
 
-import android.content.pm.PackageManager;
-import android.util.Log;
-
 import com.defaultapps.android_cryptocurrency_prices.data.models.ResponseFileModel;
 import com.defaultapps.android_cryptocurrency_prices.data.overview.CryptocurrencyOverviewImpl;
 
@@ -18,7 +15,8 @@ public class ResponsePresenterImpl implements ResponsePresenter {
 
     private View view;  // MVP - View - MainActivity
 
-    ResponsePresenterImpl(View view){ //сделать onAttach onDetach
+    @Override
+    public void onAttach(View view) {
         this.view = view;
     }
 
@@ -38,5 +36,10 @@ public class ResponsePresenterImpl implements ResponsePresenter {
 
             }
         });
+    }
+
+    @Override
+    public void onDetach() {
+        view = null;
     }
 }

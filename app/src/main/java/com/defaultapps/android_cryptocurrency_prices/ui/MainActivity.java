@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.defaultapps.android_cryptocurrency_prices.R;
-import com.defaultapps.android_cryptocurrency_prices.data.models.ResponseFileModel;
 
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements View {
@@ -20,7 +18,8 @@ public class MainActivity extends AppCompatActivity implements View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         responseView = findViewById(R.id.text_view);
-        pressenter = new ResponsePresenterImpl(this);
+        pressenter = new ResponsePresenterImpl();
+        pressenter.onAttach(this);
         pressenter.overview();
 
     }
