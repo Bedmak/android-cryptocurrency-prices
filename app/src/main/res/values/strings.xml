@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">android-cryptocurrency-prices</string>
+    <string name="cryptocurrency">Cryptocurrency:</string>
 </resources>

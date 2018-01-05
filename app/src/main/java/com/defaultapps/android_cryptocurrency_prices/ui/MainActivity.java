@@ -10,7 +10,7 @@ import com.defaultapps.android_cryptocurrency_prices.R;
 
 public class MainActivity extends AppCompatActivity implements View {
 
-    TextView responseView;
+    private TextView responseView;
     private ResponsePresenterImpl presenter;
 
     @Override
