@@ -17,7 +17,7 @@ public class CryptocurrencyOverviewImpl implements CryptocurrencyOverview {
 
     @Override
     public Single<List<ResponseFileModel>> getCoins() {
-        return ns.getListCryptocurrency(1)
+        return ns.getListCryptocurrency(10)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

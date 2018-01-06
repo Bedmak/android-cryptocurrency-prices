@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "com.defaultapps.android_cryptocurrency_prices"
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -25,5 +25,5 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$converterGson"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid"
-
+    implementation "com.android.support:recyclerview-v7:$support"
 }

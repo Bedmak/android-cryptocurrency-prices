@@ -16,6 +16,7 @@ public class ResponsePresenterImpl implements ResponsePresenter {               
 
     private View view;                                                                              // MVP - View - MainActivity
 
+
     @Override
     public void onAttach(View view) {
         this.view = view;
@@ -32,7 +33,7 @@ public class ResponsePresenterImpl implements ResponsePresenter {               
             @Override
             public void onSuccess(List<ResponseFileModel> coins) {
                 if (coins != null && !coins.isEmpty()) {
-                    view.showCoin(coins.get(0).getName() + " - " + coins.get(0).getPriceUsd());
+                    view.showCoins(coins);
                 }
             }
 
