@@ -21,4 +21,10 @@ public class CryptocurrencyOverviewImpl implements CryptocurrencyOverview {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    public String getUsdChangesPrices(ResponseFileModel coin) {
+        float price = Float.parseFloat(coin.getPriceUsd());
+        float percents = Float.parseFloat(coin.getPercentChange1h());
+        return Float.toString(price - (price / 100) * (100 - percents));
+    }
 }
