@@ -71,10 +71,10 @@ public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.CoinsViewHol
     @Override
     public void onBindViewHolder(CoinsViewHolder holder, int position) {
         ResponseFileModel coin = coins.get(position);
-        holder.coinName.setText(coin.getName());
+        holder.coinName.setText(String.format("%s (%s)", coin.getName(), coin.getSymbol()));
         holder.coinPrice.setText(coin.getPriceUsd());
         if (changeFlag == 1) {
-            holder.coinChange.setText(coin.getPercentChange1h() + " %");
+            holder.coinChange.setText(String.format("%s %%", coin.getPercentChange1h()));
         } else {
             holder.coinChange.setText(ChangeConverter.getUsdChangesPrices(coin));
         }
