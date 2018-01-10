@@ -27,11 +27,12 @@ public class ResponsePresenterImpl implements ResponsePresenter {               
         cryptoOverview.getCoins().subscribe(new SingleObserver<List<ResponseFileModel>>() {
             @Override
             public void onSubscribe(Disposable d) {
-
+                Log.v("ResponsePresenter", "onSubscribe");
             }
 
             @Override
             public void onSuccess(List<ResponseFileModel> coins) {
+                Log.v("ResponsePresenter", "onSuccess");
                 if (coins != null && !coins.isEmpty()) {
                     view.showCoins(coins);
                 }
@@ -39,7 +40,7 @@ public class ResponsePresenterImpl implements ResponsePresenter {               
 
             @Override
             public void onError(Throwable e) {
-                Log.e("Response", "error - ", e);
+                Log.e("Response", e.getMessage());
             }
         });
     }

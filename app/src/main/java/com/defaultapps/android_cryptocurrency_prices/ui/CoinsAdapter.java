@@ -11,20 +11,20 @@ import android.widget.TextView;
 
 import com.defaultapps.android_cryptocurrency_prices.R;
 import com.defaultapps.android_cryptocurrency_prices.data.models.ResponseFileModel;
-import com.defaultapps.android_cryptocurrency_prices.data.overview.CryptocurrencyOverviewImpl;
+import com.defaultapps.android_cryptocurrency_prices.data.utils.ChangeConverter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.CoinsViewHolder> {
 
-    private CryptocurrencyOverviewImpl cryptoOverview = new CryptocurrencyOverviewImpl();
 
     List<ResponseFileModel> coins;
 
     private int changeFlag = 1;
 
-    public CoinsAdapter(List<ResponseFileModel> coins) {
-        this.coins = coins;
+    public CoinsAdapter() {
+        coins = new ArrayList<>();
     }
 
     public static class CoinsViewHolder extends RecyclerView.ViewHolder {
@@ -76,7 +76,7 @@ public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.CoinsViewHol
         if (changeFlag == 1) {
             holder.coinChange.setText(coin.getPercentChange1h() + " %");
         } else {
-            holder.coinChange.setText(cryptoOverview.getUsdChangesPrices(coin));
+            holder.coinChange.setText(ChangeConverter.getUsdChangesPrices(coin));
         }
         if (Float.parseFloat(coin.getPercentChange1h()) > 0) {
             holder.coinChange.setBackgroundColor(Color.GREEN);
@@ -88,5 +88,13 @@ public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.CoinsViewHol
     @Override
     public int getItemCount() {
         return coins.size();
+    }
+
+    public void setData(List<ResponseFileModel> responseCoins) {
+        if (coins != null && !coins.isEmpty()) {
+            coins.clear();
+        }
+        coins.addAll(responseCoins);
+        notifyDataSetChanged();
     }
 }
