@@ -1,19 +1,21 @@
-package com.defaultapps.android_cryptocurrency_prices.ui;
+package com.defaultapps.android_cryptocurrency_prices.ui.main;
 
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.defaultapps.android_cryptocurrency_prices.R;
 import com.defaultapps.android_cryptocurrency_prices.data.models.ResponseFileModel;
+import com.defaultapps.android_cryptocurrency_prices.ui.base.BaseActivity;
+import com.defaultapps.android_cryptocurrency_prices.ui.base.Presenter;
 
 import java.util.List;
 
+import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements View {
+
+public class MainActivity extends BaseActivity implements MainContract.MainView {
 
     private RecyclerView coinsRecyclerView;
     private CoinsAdapter coinsAdapter;
@@ -22,11 +24,10 @@ public class MainActivity extends AppCompatActivity implements View {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        presenter = new ResponsePresenterImpl();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         coinsRecyclerView = findViewById(R.id.coinsRecyclerView);
-        presenter = new ResponsePresenterImpl();
-        presenter.onAttach(this);
         presenter.overview();
 
         coinsAdapter = new CoinsAdapter();
@@ -45,14 +46,13 @@ public class MainActivity extends AppCompatActivity implements View {
 
     @Override
     public void showCoins(List<ResponseFileModel> coins) {
-        Log.v("MainActivity", "Refresh");
+        Timber.d("showCoins");
         coinsAdapter.setData(coins);
         swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        presenter.onDetach();
+    protected Presenter providePresenter() {
+        return presenter;
     }
 }

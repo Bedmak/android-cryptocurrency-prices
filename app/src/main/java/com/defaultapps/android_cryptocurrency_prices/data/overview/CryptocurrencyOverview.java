@@ -8,6 +8,6 @@ import io.reactivex.Single;
 
 public interface CryptocurrencyOverview {
 
-    Single<List<ResponseFileModel>> getCoins();
+    Single<List<ResponseFileModel>> getCoins(int start, int lim);
 
 }

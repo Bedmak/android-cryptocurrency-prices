@@ -1,6 +1,8 @@
-package com.defaultapps.android_cryptocurrency_prices.ui;
+package com.defaultapps.android_cryptocurrency_prices.ui.main;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,30 +14,35 @@ import android.widget.TextView;
 import com.defaultapps.android_cryptocurrency_prices.R;
 import com.defaultapps.android_cryptocurrency_prices.data.models.ResponseFileModel;
 import com.defaultapps.android_cryptocurrency_prices.data.utils.ChangeConverter;
+import com.defaultapps.android_cryptocurrency_prices.ui.detailed.DetailedActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.CoinsViewHolder> {
 
 
-    List<ResponseFileModel> coins;
+    private final List<ResponseFileModel> coins;
 
     private int changeFlag = 1;
 
-    public CoinsAdapter() {
+    CoinsAdapter() {
         coins = new ArrayList<>();
     }
 
-    public static class CoinsViewHolder extends RecyclerView.ViewHolder {
+    static class CoinsViewHolder extends RecyclerView.ViewHolder {
 
+        private final Context context;
         LinearLayout coinContainer;
         TextView coinName;
         TextView coinPrice;
         TextView coinChange;
 
-        public CoinsViewHolder(View v) {
+        CoinsViewHolder(View v) {
             super(v);
+            context = v.getContext();
             coinContainer = v.findViewById(R.id.coinContainer);
             coinName = v.findViewById(R.id.coinName);
             coinPrice = v.findViewById(R.id.coinPrice);
@@ -50,6 +57,7 @@ public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.CoinsViewHol
         vh.coinChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Timber.d("Change onClick");
                 if (changeFlag == 1) {
                     changeFlag = 2;
                 } else {
@@ -62,7 +70,10 @@ public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.CoinsViewHol
         vh.coinContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // вывод подробной информации
+                Timber.d("onClick - " + vh.getAdapterPosition() + " position");
+                Intent intent = new Intent(vh.context, DetailedActivity.class);
+                intent.putExtra(DetailedActivity.COIN_NO, vh.getAdapterPosition());
+                vh.context.startActivity(intent);
             }
         });
         return vh;
@@ -91,9 +102,7 @@ public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.CoinsViewHol
     }
 
     public void setData(List<ResponseFileModel> responseCoins) {
-        if (coins != null && !coins.isEmpty()) {
-            coins.clear();
-        }
+        coins.clear();
         coins.addAll(responseCoins);
         notifyDataSetChanged();
     }

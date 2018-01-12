@@ -32,4 +32,5 @@ ext {
     retrofit = '2.3.0'
     converterGson = '2.3.0'
     rxAndroid = '2.0.1'
+    timber = '4.6.0'
 }
