@@ -20,7 +20,7 @@ public class ResponsePresenterImpl extends BasePresenter<MainContract.MainView> 
 
     @Override
     public void overview() {
-        cryptoOverview.getCoins(0, 10).subscribe(new SingleObserver<List<ResponseFileModel>>() {
+        cryptoOverview.getCoins(0, 15).subscribe(new SingleObserver<List<ResponseFileModel>>() {
             @Override
             public void onSubscribe(Disposable d) {
                 Timber.d("onSubscribe");

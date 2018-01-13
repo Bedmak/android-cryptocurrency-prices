@@ -1,8 +1,6 @@
 package com.defaultapps.android_cryptocurrency_prices.ui.detailed;
 
 
-import android.util.Log;
-
 import com.defaultapps.android_cryptocurrency_prices.data.models.ResponseFileModel;
 import com.defaultapps.android_cryptocurrency_prices.data.overview.CryptocurrencyOverviewImpl;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.BasePresenter;
