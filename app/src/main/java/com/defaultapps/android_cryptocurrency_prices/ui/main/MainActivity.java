@@ -20,23 +20,18 @@ import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements MainContract.MainView {
 
-    private RecyclerView coinsRecyclerView;
-    private CoinsAdapter coinsAdapter;
     private ResponsePresenterImpl presenter;
+
+    private ProgressBar progressBar;
+    private CoinsAdapter coinsAdapter;
+    private RecyclerView coinsRecyclerView;
+    private LinearLayoutManager linearLayoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    private LinearLayoutManager linearLayoutManager;
-    private ProgressBar progressBar;
-
-    // Index from which pagination should start (0 is 1st page in our case)
     private static final int PAGE_START = 0;
-    // Indicates if footer ProgressBar is shown (i.e. next page is loading)
     private boolean isLoading = false;
-    // If current page is the last page (Pagination will stop after this page load)
     private boolean isLastPage = false;
-    // total no. of pages to load. Initial load is page 0, after which 2 more pages will load.
     private int TOTAL_PAGES = 29;
-    // indicates the current page which Pagination is fetching.
     private int currentPage = PAGE_START;
 
     @Override
@@ -46,7 +41,6 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
         setContentView(R.layout.activity_main);
         coinsRecyclerView = findViewById(R.id.coinsRecyclerView);
         progressBar = findViewById(R.id.progressBar);
-        presenter.overview(0);
 
         coinsAdapter = new CoinsAdapter();
         linearLayoutManager = new LinearLayoutManager(this);
@@ -82,42 +76,26 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                presenter.overview(0);
+                presenter.overview(PAGE_START);
             }
         });
-
+        
+        presenter.overview(currentPage);
     }
 
     @Override
     public void showCoins(List<CoinModel> coins) {
         Timber.d("showCoins");
-        //coinsAdapter.setData(coins);
         if (currentPage == 0) {
-            loadFirstPage(coins);
+            progressBar.setVisibility(View.GONE);
         } else {
-            loadNextPage(coins);
+            coinsAdapter.removeLoadingFooter();
+            isLoading = false;
         }
-        swipeRefreshLayout.setRefreshing(false);
-    }
-
-    private void loadFirstPage(List<CoinModel> coins) {
-        // fetching dummy data
-        progressBar.setVisibility(View.GONE);
         coinsAdapter.addAll(coins);
-
         if (currentPage <= TOTAL_PAGES) coinsAdapter.addLoadingFooter();
         else isLastPage = true;
-    }
-
-    private void loadNextPage(List<CoinModel> coins) {
-
-        coinsAdapter.removeLoadingFooter();
-        isLoading = false;
-
-        coinsAdapter.addAll(coins);
-
-        if (currentPage != TOTAL_PAGES) coinsAdapter.addLoadingFooter();
-        else isLastPage = true;
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

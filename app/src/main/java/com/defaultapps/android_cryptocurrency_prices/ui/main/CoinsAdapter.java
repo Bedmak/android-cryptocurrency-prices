@@ -3,6 +3,7 @@ package com.defaultapps.android_cryptocurrency_prices.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.CoinsViewHolder> {
+public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int ITEM = 0;
     private static final int LOADING = 1;
@@ -34,7 +35,7 @@ public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.CoinsViewHol
         coins = new ArrayList<>();
     }
 
-    static class CoinsViewHolder extends RecyclerView.ViewHolder {
+    public class CoinsViewHolder extends RecyclerView.ViewHolder {
 
         private final Context context;
         LinearLayout coinContainer;
@@ -52,10 +53,34 @@ public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.CoinsViewHol
         }
     }
 
+    public class LoadingViewHolder extends RecyclerView.ViewHolder {
+
+        public LoadingViewHolder(View v) {
+            super(v);
+        }
+    }
+
     @Override
-    public CoinsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_coin, parent, false);
-        final CoinsViewHolder vh = new CoinsViewHolder(v);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder viewHolder = null;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        switch (viewType) {
+            case ITEM:
+                viewHolder = getCoinsViewHolder(parent,inflater);
+                break;
+            case LOADING:
+                View v2 = inflater.inflate(R.layout.item_progress, parent, false);
+                viewHolder = new LoadingViewHolder(v2);
+                break;
+        }
+        return viewHolder;
+    }
+
+    private RecyclerView.ViewHolder getCoinsViewHolder(ViewGroup parent, LayoutInflater inflater) {
+        final CoinsViewHolder vh;
+        View v1 = inflater.inflate(R.layout.item_coin, parent, false);
+        vh = new CoinsViewHolder(v1);
+
         vh.coinChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,20 +107,28 @@ public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.CoinsViewHol
     }
 
     @Override
-    public void onBindViewHolder(CoinsViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         CoinModel coin = coins.get(position);
-        holder.coinName.setText(String.format("%s (%s)", coin.getName(), coin.getSymbol()));
-        holder.coinPrice.setText(coin.getPriceUsd());
-        if (changeFlag == 1) {
-            holder.coinChange.setText(String.format("%s %%", coin.getPercentChange1h()));
-        } else {
-            holder.coinChange.setText(ChangeConverter.getUsdChangesPrices(coin));
+
+        switch (getItemViewType(position)) {
+            case ITEM:
+               final CoinsViewHolder coinsVH = (CoinsViewHolder) holder;
+
+                coinsVH.coinName.setText(String.format("%s (%s)", coin.getName(), coin.getSymbol()));
+                coinsVH.coinPrice.setText(coin.getPriceUsd());
+                if (changeFlag == 1) {
+                    coinsVH.coinChange.setText(String.format("%s %%", coin.getPercentChange1h()));
+                } else {
+                    coinsVH.coinChange.setText(ChangeConverter.getUsdChangesPrices(coin));
+                }
+             if (Float.parseFloat(coin.getPercentChange1h()) > 0) {
+                coinsVH.coinChange.setBackgroundColor(Color.GREEN);
+            } else {
+                coinsVH.coinChange.setBackgroundColor(Color.RED);
+            }
+            case LOADING:
+                break;
         }
-        /* if (Float.parseFloat(coin.getPercentChange1h()) > 0) {
-            holder.coinChange.setBackgroundColor(Color.GREEN);
-        } else {
-            holder.coinChange.setBackgroundColor(Color.RED);
-        } */
     }
 
     @Override
@@ -108,12 +141,9 @@ public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.CoinsViewHol
         return (position == coins.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
     }
 
-    public void setData(List<CoinModel> responseCoins) {
-        coins.clear();
-        coins.addAll(responseCoins);
-        notifyDataSetChanged();
-    }
-
+    /*
+    Helpers methods
+     */
     public void add(CoinModel coin) {
         coins.add(coin);
         notifyItemInserted(coins.size() - 1);
@@ -125,8 +155,8 @@ public class CoinsAdapter extends RecyclerView.Adapter<CoinsAdapter.CoinsViewHol
         }
     }
 
-    public void remove(CoinModel city) {
-        int position = coins.indexOf(city);
+    public void remove(CoinModel coin) {
+        int position = coins.indexOf(coin);
         if (position > -1) {
             coins.remove(position);
             notifyItemRemoved(position);
