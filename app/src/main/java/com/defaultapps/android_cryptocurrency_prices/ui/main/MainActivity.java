@@ -79,7 +79,7 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
                 presenter.overview(PAGE_START);
             }
         });
-        
+
         presenter.overview(currentPage);
     }
 

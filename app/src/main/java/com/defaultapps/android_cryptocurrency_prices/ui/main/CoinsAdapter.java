@@ -8,12 +8,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.defaultapps.android_cryptocurrency_prices.R;
 import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
 import com.defaultapps.android_cryptocurrency_prices.data.utils.ChangeConverter;
+import com.defaultapps.android_cryptocurrency_prices.data.utils.Constants;
 import com.defaultapps.android_cryptocurrency_prices.ui.detailed.DetailedActivity;
 
 import java.util.ArrayList;
@@ -22,9 +25,6 @@ import java.util.List;
 import timber.log.Timber;
 
 public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-    private static final int ITEM = 0;
-    private static final int LOADING = 1;
 
     private final List<CoinModel> coins;
 
@@ -39,6 +39,7 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         private final Context context;
         LinearLayout coinContainer;
+        ImageView coinImg;
         TextView coinName;
         TextView coinPrice;
         TextView coinChange;
@@ -47,6 +48,7 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(v);
             context = v.getContext();
             coinContainer = v.findViewById(R.id.coinContainer);
+            coinImg = v.findViewById(R.id.coinImg);
             coinName = v.findViewById(R.id.coinName);
             coinPrice = v.findViewById(R.id.coinPrice);
             coinChange = v.findViewById(R.id.coinChange);
@@ -65,10 +67,10 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         RecyclerView.ViewHolder viewHolder = null;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
-            case ITEM:
+            case Constants.ITEM:
                 viewHolder = getCoinsViewHolder(parent,inflater);
                 break;
-            case LOADING:
+            case Constants.LOADING:
                 View v2 = inflater.inflate(R.layout.item_progress, parent, false);
                 viewHolder = new LoadingViewHolder(v2);
                 break;
@@ -111,8 +113,12 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         CoinModel coin = coins.get(position);
 
         switch (getItemViewType(position)) {
-            case ITEM:
+            case Constants.ITEM:
                final CoinsViewHolder coinsVH = (CoinsViewHolder) holder;
+                Glide
+                        .with(coinsVH.context)
+                        .load(Constants.IMAGE_BASE_URL + coin.getId() + Constants.IMAGE_FORMAT)
+                        .into(coinsVH.coinImg);
 
                 coinsVH.coinName.setText(String.format("%s (%s)", coin.getName(), coin.getSymbol()));
                 coinsVH.coinPrice.setText(coin.getPriceUsd());
@@ -126,7 +132,7 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             } else {
                 coinsVH.coinChange.setBackgroundColor(Color.RED);
             }
-            case LOADING:
+            case Constants.LOADING:
                 break;
         }
     }
@@ -138,7 +144,7 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
-        return (position == coins.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
+        return (position == coins.size() - 1 && isLoadingAdded) ? Constants.LOADING : Constants.ITEM;
     }
 
     /*
