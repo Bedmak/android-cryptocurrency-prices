@@ -1,6 +1,6 @@
 package com.defaultapps.android_cryptocurrency_prices.data.overview;
 
-import com.defaultapps.android_cryptocurrency_prices.data.models.ResponseFileModel;
+import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
 import com.defaultapps.android_cryptocurrency_prices.data.network.CoinApi;
 import com.defaultapps.android_cryptocurrency_prices.data.network.NetworkService;
 
@@ -21,7 +21,7 @@ public class CryptocurrencyOverviewImpl implements CryptocurrencyOverview {
     }
 
     @Override
-    public Single<List<ResponseFileModel>> getCoins(int start, int lim) {
+    public Single<List<CoinModel>> getCoins(int start, int lim) {
         Timber.d("getCoins");
         return ns.getListCryptocurrency(start, lim)
                 .subscribeOn(Schedulers.io())

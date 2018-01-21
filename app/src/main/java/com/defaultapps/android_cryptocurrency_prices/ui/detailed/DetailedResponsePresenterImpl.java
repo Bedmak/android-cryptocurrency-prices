@@ -1,7 +1,7 @@
 package com.defaultapps.android_cryptocurrency_prices.ui.detailed;
 
 
-import com.defaultapps.android_cryptocurrency_prices.data.models.ResponseFileModel;
+import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
 import com.defaultapps.android_cryptocurrency_prices.data.overview.CryptocurrencyOverviewImpl;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.BasePresenter;
 
@@ -21,14 +21,14 @@ public class DetailedResponsePresenterImpl extends BasePresenter<DetailedContrac
 
     @Override
     public void overview(int start) {
-        cryptoOverview.getCoins(start, 1).subscribe(new SingleObserver<List<ResponseFileModel>>() {
+        cryptoOverview.getCoins(start, 1).subscribe(new SingleObserver<List<CoinModel>>() {
             @Override
             public void onSubscribe(Disposable d) {
                 Timber.d("onSubscribe");
             }
 
             @Override
-            public void onSuccess(List<ResponseFileModel> coin) {
+            public void onSuccess(List<CoinModel> coin) {
                 Timber.d("onSuccess");
                 if (coin != null && !coin.isEmpty()) {
                     getView().displayData(coin.get(0));

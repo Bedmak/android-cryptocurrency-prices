@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.defaultapps.android_cryptocurrency_prices.R;
-import com.defaultapps.android_cryptocurrency_prices.data.models.ResponseFileModel;
+import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.BaseActivity;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.Presenter;
 
@@ -30,7 +30,7 @@ public class DetailedActivity extends BaseActivity implements DetailedContract.D
     }
 
     @Override
-    public void displayData(ResponseFileModel coin) {
+    public void displayData(CoinModel coin) {
         Timber.d("displayData");
         ((TextView) findViewById(R.id.detailedCoinName)).setText(coin.getName());
     }

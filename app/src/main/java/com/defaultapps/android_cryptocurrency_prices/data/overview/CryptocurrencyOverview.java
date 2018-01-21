@@ -1,6 +1,6 @@
 package com.defaultapps.android_cryptocurrency_prices.data.overview;
 
-import com.defaultapps.android_cryptocurrency_prices.data.models.ResponseFileModel;
+import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
 
 import java.util.List;
 
@@ -8,6 +8,6 @@ import io.reactivex.Single;
 
 public interface CryptocurrencyOverview {
 
-    Single<List<ResponseFileModel>> getCoins(int start, int lim);
+    Single<List<CoinModel>> getCoins(int start, int lim);
 
 }
