@@ -24,6 +24,7 @@ public class ResponsePresenterImpl extends BasePresenter<MainContract.MainView> 
             @Override
             public void onSubscribe(Disposable d) {
                 Timber.d("onSubscribe");
+                getView().hideErrorView();
             }
 
             @Override
@@ -37,6 +38,7 @@ public class ResponsePresenterImpl extends BasePresenter<MainContract.MainView> 
             @Override
             public void onError(Throwable e) {
                 Timber.e(e);
+                getView().showErrorView(e);
             }
         });
     }

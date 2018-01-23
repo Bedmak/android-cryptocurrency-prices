@@ -10,6 +10,8 @@ public interface MainContract {
 
     interface MainView extends MvpView {
         void showCoins(List<CoinModel> coins);
+        void showErrorView(Throwable t);
+        void hideErrorView();
     }
 
     interface ResponsePresenter extends Presenter<MainView> {
