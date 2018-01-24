@@ -18,8 +18,9 @@ import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.BaseActivity;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.Presenter;
 
+import java.net.SocketTimeoutException;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
+
 
 import timber.log.Timber;
 
@@ -104,7 +105,8 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
 
     @Override
     public void showCoins(List<CoinModel> coins) {
-        Timber.d("showCoins");
+        Timber.d("showCoins %s", currentPage);
+        swipeRefreshLayout.setRefreshing(false);
         if (currentPage == 0) {
             progressBar.setVisibility(View.GONE);
         } else {
@@ -114,7 +116,6 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
         coinsAdapter.addAll(coins);
         if (currentPage <= TOTAL_PAGES) coinsAdapter.addLoadingFooter();
         else isLastPage = true;
-        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -126,20 +127,20 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
     public void showErrorView(Throwable throwable) {
         if (errorLayout.getVisibility() == View.GONE) {
             swipeRefreshLayout.setRefreshing(false);
-            if (!coinsAdapter.isEmpty()) {
-                coinsAdapter.clear();
-            }
             errorLayout.setVisibility(View.VISIBLE);
+            coinsRecyclerView.setVisibility(View.GONE);
             progressBar.setVisibility(View.GONE);
 
             errorTextView.setText(fetchErrorMessage(throwable));
         }
     }
 
+    @Override
     public void hideErrorView() {
         if (errorLayout.getVisibility() == View.VISIBLE) {
             errorLayout.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
+            coinsRecyclerView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -153,7 +154,7 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
 
         if (!isNetworkConnected()) {
             errorMsg = getResources().getString(R.string.error_msg_no_internet);
-        } else if (throwable instanceof TimeoutException) {
+        } else if (throwable instanceof SocketTimeoutException) {
             errorMsg = getResources().getString(R.string.error_msg_timeout);
         }
 

@@ -8,6 +8,7 @@ import java.util.List;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import timber.log.Timber;
 
 public class ResponsePresenterImpl extends BasePresenter<MainContract.MainView> implements MainContract.ResponsePresenter {                                   // MVP - Presenter
@@ -20,27 +21,35 @@ public class ResponsePresenterImpl extends BasePresenter<MainContract.MainView> 
 
     @Override
     public void overview(int start) {
-        cryptoOverview.getCoins(start, 50).subscribe(new SingleObserver<List<CoinModel>>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                Timber.d("onSubscribe");
-                getView().hideErrorView();
-            }
+        getView().hideErrorView();
 
-            @Override
-            public void onSuccess(List<CoinModel> coins) {
-                Timber.d("onSuccess");
-                if (coins != null && !coins.isEmpty()) {
-                    getView().showCoins(coins);
-                }
-            }
+        cryptoOverview.getCoins(start, 50)
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        getCompositeDisposable().add(disposable);
+                    }
+                })
+                .subscribe(new SingleObserver<List<CoinModel>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    Timber.d("onSubscribe");
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                Timber.e(e);
-                getView().showErrorView(e);
-            }
-        });
+                    @Override
+                    public void onSuccess(List<CoinModel> coins) {
+                        Timber.d("onSuccess");
+                        if (coins != null && !coins.isEmpty()) {
+                            getView().showCoins(coins);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e);
+                        getView().showErrorView(e);
+                    }
+                });
     }
 
 }

@@ -14,16 +14,16 @@ import timber.log.Timber;
 
 public class CryptocurrencyOverviewImpl implements CryptocurrencyOverview {
 
-    private final CoinApi ns;
+    private final CoinApi api;
 
     public CryptocurrencyOverviewImpl() {
-        ns = NetworkService.getCoinApi();
+        api = NetworkService.getCoinApi();
     }
 
     @Override
     public Single<List<CoinModel>> getCoins(int start, int lim) {
         Timber.d("getCoins");
-        return ns.getListCryptocurrency(start, lim)
+        return api.getListCryptocurrency(start, lim)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
