@@ -24,12 +24,7 @@ public class ResponsePresenterImpl extends BasePresenter<MainContract.MainView> 
         getView().hideErrorView();
 
         cryptoOverview.getCoins(start, 50)
-                .doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(Disposable disposable) throws Exception {
-                        getCompositeDisposable().add(disposable);
-                    }
-                })
+                .doOnSubscribe(disposable -> getCompositeDisposable().add(disposable))
                 .subscribe(new SingleObserver<List<CoinModel>>() {
                     @Override
                     public void onSubscribe(Disposable d) {

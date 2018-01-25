@@ -9,6 +9,7 @@ import java.util.List;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import timber.log.Timber;
 
 public class DetailedResponsePresenterImpl extends BasePresenter<DetailedContract.DetailedView> implements DetailedContract.DetailedResponsePresenter {
@@ -21,22 +22,24 @@ public class DetailedResponsePresenterImpl extends BasePresenter<DetailedContrac
 
     @Override
     public void overview(int start) {
-        cryptoOverview.getCoins(start, 1).subscribe(new SingleObserver<List<CoinModel>>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                Timber.d("onSubscribe");
-            }
+        cryptoOverview.getCoins(start, 1)
+                .doOnSubscribe(disposable -> getCompositeDisposable().add(disposable))
+                .subscribe(new SingleObserver<List<CoinModel>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Timber.d("onSubscribe");
+                    }
 
-            @Override
-            public void onSuccess(List<CoinModel> coin) {
-                Timber.d("onSuccess");
-                if (coin != null && !coin.isEmpty()) {
-                    getView().displayData(coin.get(0));
-                }
-            }
+                    @Override
+                    public void onSuccess(List<CoinModel> coin) {
+                        Timber.d("onSuccess");
+                        if (coin != null && !coin.isEmpty()) {
+                            getView().displayData(coin.get(0));
+                        }
+                    }
 
-            @Override
-            public void onError(Throwable e) {
+                    @Override
+                    public void onError(Throwable e) {
                 Timber.e(e);
             }
         });

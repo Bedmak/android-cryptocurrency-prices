@@ -86,19 +86,8 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
         });
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.overview(PAGE_START);
-            }
-        });
-
-        btnRetry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.overview(PAGE_START);
-            }
-        });
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.overview(PAGE_START));
+        btnRetry.setOnClickListener(view -> presenter.overview(PAGE_START));
 
         presenter.overview(currentPage);
     }
@@ -128,7 +117,9 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
         if (errorLayout.getVisibility() == View.GONE) {
             swipeRefreshLayout.setRefreshing(false);
             errorLayout.setVisibility(View.VISIBLE);
-            coinsRecyclerView.setVisibility(View.GONE);
+            if (!coinsAdapter.isEmpty()) {
+                coinsAdapter.clear();
+            }
             progressBar.setVisibility(View.GONE);
 
             errorTextView.setText(fetchErrorMessage(throwable));
@@ -140,7 +131,6 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
         if (errorLayout.getVisibility() == View.VISIBLE) {
             errorLayout.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
-            coinsRecyclerView.setVisibility(View.VISIBLE);
         }
     }
 

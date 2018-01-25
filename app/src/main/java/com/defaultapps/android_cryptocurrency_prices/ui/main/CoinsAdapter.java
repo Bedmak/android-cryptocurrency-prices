@@ -83,27 +83,21 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         View v1 = inflater.inflate(R.layout.item_coin, parent, false);
         vh = new CoinsViewHolder(v1);
 
-        vh.coinChange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Timber.d("Change onClick");
-                if (changeFlag == 1) {
-                    changeFlag = 2;
-                } else {
-                    changeFlag = 1;
-                }
-                notifyDataSetChanged();
+        vh.coinChange.setOnClickListener(view -> {
+            Timber.d("Change onClick");
+            if (changeFlag == 1) {
+                changeFlag = 2;
+            } else {
+                changeFlag = 1;
             }
+            notifyDataSetChanged();
         });
 
-        vh.coinContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Timber.d("onClick - " + vh.getAdapterPosition() + " position");
-                Intent intent = new Intent(vh.context, DetailedActivity.class);
-                intent.putExtra(DetailedActivity.COIN_NO, vh.getAdapterPosition());
-                vh.context.startActivity(intent);
-            }
+        vh.coinContainer.setOnClickListener(view -> {
+            Timber.d("onClick - " + vh.getAdapterPosition() + " position");
+            Intent intent = new Intent(vh.context, DetailedActivity.class);
+            intent.putExtra(DetailedActivity.COIN_NO, vh.getAdapterPosition());
+            vh.context.startActivity(intent);
         });
         return vh;
     }
