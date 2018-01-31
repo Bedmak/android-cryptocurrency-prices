@@ -12,11 +12,11 @@ import retrofit2.http.Query;
 
 public interface CoinApi {
     @GET("ticker/")
-    Observable<List<CoinModel>> getListCryptocurrency();
+    Single<List<CoinModel>> getListCryptocurrency();
 
     @GET("ticker/")
-    Observable<List<CoinModel>> getListCryptocurrency(@Query("limit") int lim);
+    Single<List<CoinModel>> getListCryptocurrency(@Query("limit") int lim);
 
     @GET("ticker/")
-    Observable<List<CoinModel>> getListCryptocurrency(@Query("start") int start, @Query("limit") int limit);
+    Single<List<CoinModel>> getListCryptocurrency(@Query("start") int start, @Query("limit") int limit);
 }
