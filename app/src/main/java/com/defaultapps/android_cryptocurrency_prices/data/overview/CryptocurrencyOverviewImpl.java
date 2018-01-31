@@ -6,7 +6,7 @@ import com.defaultapps.android_cryptocurrency_prices.data.network.NetworkService
 
 import java.util.List;
 
-import io.reactivex.Single;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
@@ -21,7 +21,7 @@ public class CryptocurrencyOverviewImpl implements CryptocurrencyOverview {
     }
 
     @Override
-    public Single<List<CoinModel>> getCoins(int start, int lim) {
+    public Observable<List<CoinModel>> getCoins(int start, int lim) {
         Timber.d("getCoins");
         return api.getListCryptocurrency(start, lim)
                 .subscribeOn(Schedulers.io())

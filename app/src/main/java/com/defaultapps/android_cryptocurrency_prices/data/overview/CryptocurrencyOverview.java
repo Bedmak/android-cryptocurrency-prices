@@ -4,10 +4,10 @@ import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
 
 import java.util.List;
 
-import io.reactivex.Single;
+import io.reactivex.Observable;
 
 public interface CryptocurrencyOverview {
 
-    Single<List<CoinModel>> getCoins(int start, int lim);
+    Observable<List<CoinModel>> getCoins(int start, int lim);
 
 }

@@ -22,7 +22,7 @@ public class DetailedResponsePresenterImpl extends BasePresenter<DetailedContrac
 
     @Override
     public void overview(int start) {
-        cryptoOverview.getCoins(start, 1)
+        /*cryptoOverview.getCoins(start, 1)
                 .doOnSubscribe(disposable -> getCompositeDisposable().add(disposable))
                 .subscribe(new SingleObserver<List<CoinModel>>() {
                     @Override
@@ -42,7 +42,7 @@ public class DetailedResponsePresenterImpl extends BasePresenter<DetailedContrac
                     public void onError(Throwable e) {
                 Timber.e(e);
             }
-        });
+        });*/
     }
 
 }

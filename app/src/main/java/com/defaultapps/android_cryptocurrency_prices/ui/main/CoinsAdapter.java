@@ -1,7 +1,5 @@
 package com.defaultapps.android_cryptocurrency_prices.ui.main;
 
-
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -37,7 +35,6 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public class CoinsViewHolder extends RecyclerView.ViewHolder {
 
-        private final Context context;
         LinearLayout coinContainer;
         ImageView coinImg;
         TextView coinName;
@@ -46,7 +43,6 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         CoinsViewHolder(View v) {
             super(v);
-            context = v.getContext();
             coinContainer = v.findViewById(R.id.coinContainer);
             coinImg = v.findViewById(R.id.coinImg);
             coinName = v.findViewById(R.id.coinName);
@@ -95,9 +91,9 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         vh.coinContainer.setOnClickListener(view -> {
             Timber.d("onClick - " + vh.getAdapterPosition() + " position");
-            Intent intent = new Intent(vh.context, DetailedActivity.class);
+            Intent intent = new Intent(parent.getContext(), DetailedActivity.class);
             intent.putExtra(DetailedActivity.COIN_NO, vh.getAdapterPosition());
-            vh.context.startActivity(intent);
+            parent.getContext().startActivity(intent);
         });
         return vh;
     }
@@ -110,7 +106,7 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             case Constants.ITEM:
                final CoinsViewHolder coinsVH = (CoinsViewHolder) holder;
                 Glide
-                        .with(coinsVH.context)
+                        .with(holder.itemView)
                         .load(Constants.IMAGE_BASE_URL + coin.getId() + Constants.IMAGE_FORMAT)
                         .into(coinsVH.coinImg);
 
