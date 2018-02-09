@@ -24,6 +24,7 @@ import timber.log.Timber;
 
 public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private MainContract.MainView mainView;
     private final List<CoinModel> coins;
 
     private int changeFlag = 1;
@@ -88,13 +89,7 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
             notifyDataSetChanged();
         });
-
-        vh.coinContainer.setOnClickListener(view -> {
-            Timber.d("onClick - " + vh.getAdapterPosition() + " position");
-            Intent intent = new Intent(parent.getContext(), DetailedActivity.class);
-            intent.putExtra(DetailedActivity.COIN_NO, vh.getAdapterPosition());
-            parent.getContext().startActivity(intent);
-        });
+        vh.coinContainer.setOnClickListener(view -> mainView.showDetailed(vh.getAdapterPosition()));
         return vh;
     }
 
@@ -117,11 +112,12 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 } else {
                     coinsVH.coinChange.setText(ChangeConverter.getUsdChangesPrices(coin));
                 }
-             if (Float.parseFloat(coin.getPercentChange1h()) > 0) {
-                coinsVH.coinChange.setBackgroundColor(Color.GREEN);
-            } else {
-                coinsVH.coinChange.setBackgroundColor(Color.RED);
-            }
+                if (Float.parseFloat(coin.getPercentChange1h()) > 0) {
+                    coinsVH.coinChange.setBackgroundColor(Color.GREEN);
+                } else {
+                    coinsVH.coinChange.setBackgroundColor(Color.RED);
+                }
+                break;
             case Constants.LOADING:
                 break;
         }

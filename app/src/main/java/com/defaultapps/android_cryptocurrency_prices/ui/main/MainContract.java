@@ -12,6 +12,7 @@ public interface MainContract {
         void showCoins(List<CoinModel> coins);
         void showErrorView(Throwable t);
         void hideErrorView();
+        void showDetailed(int position);
     }
 
     interface ResponsePresenter extends Presenter<MainView> {

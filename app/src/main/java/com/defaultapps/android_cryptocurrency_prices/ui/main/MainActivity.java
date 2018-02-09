@@ -1,6 +1,7 @@
 package com.defaultapps.android_cryptocurrency_prices.ui.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.defaultapps.android_cryptocurrency_prices.R;
 import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.BaseActivity;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.Presenter;
+import com.defaultapps.android_cryptocurrency_prices.ui.detailed.DetailedActivity;
 
 import java.net.SocketTimeoutException;
 import java.util.List;
@@ -49,6 +51,11 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
         presenter = new ResponsePresenterImpl();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initViews();
+        presenter.overview(currentPage);
+    }
+
+    private void initViews() {
         coinsRecyclerView = findViewById(R.id.coinsRecyclerView);
         progressBar = findViewById(R.id.progressBar);
         errorLayout = findViewById(R.id.errorLayout);
@@ -88,8 +95,6 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(() -> presenter.overview(PAGE_START));
         btnRetry.setOnClickListener(view -> presenter.overview(PAGE_START));
-
-        presenter.overview(currentPage);
     }
 
     @Override
@@ -132,6 +137,14 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
             errorLayout.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void showDetailed(int position) {
+        Timber.d("onClick - " + position + " position");
+        Intent intent = new Intent(this, DetailedActivity.class);
+        intent.putExtra(DetailedActivity.COIN_NO, position);
+        startActivity(intent);
     }
 
     private boolean isNetworkConnected() {
