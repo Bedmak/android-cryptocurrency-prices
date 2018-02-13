@@ -8,14 +8,11 @@ public class ChangeConverter {
         float price = Float.parseFloat(coin.getPriceUsd());
         float percents = Float.parseFloat(coin.getPercentChange1h());
         float changePrice = price - (price / 100) * (100 - percents);
-        return Float.toString(round(changePrice, 2));
+        return Float.toString(round(changePrice));
     }
 
-    private static float round(float number, int scale) {
-        int pow = 10;
-        for (int i = 1; i < scale; i++)
-            pow *= 10;
-        double tmp = number * pow;
-        return (float) (int) ((tmp - (int) tmp) >= 0.5 ? tmp + 1 : tmp) / pow;
+    private static float round(float number) {
+        double tmp = number * 100;
+        return (float) (int) ((tmp - (int) tmp) >= 0.5 ? tmp + 1 : tmp) / 100;
     }
 }
