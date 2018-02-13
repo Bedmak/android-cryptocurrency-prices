@@ -62,7 +62,7 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
         errorTextView = findViewById(R.id.error_txt);
         btnRetry = findViewById(R.id.buttonRetry);
 
-        coinsAdapter = new CoinsAdapter();
+        coinsAdapter = new CoinsAdapter(this);
         linearLayoutManager = new LinearLayoutManager(this);
         coinsRecyclerView.setLayoutManager(linearLayoutManager);
         coinsRecyclerView.setItemAnimator(new DefaultItemAnimator());

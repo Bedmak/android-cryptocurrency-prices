@@ -1,6 +1,5 @@
 package com.defaultapps.android_cryptocurrency_prices.ui.main;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import com.defaultapps.android_cryptocurrency_prices.R;
 import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
 import com.defaultapps.android_cryptocurrency_prices.data.utils.ChangeConverter;
 import com.defaultapps.android_cryptocurrency_prices.data.utils.Constants;
-import com.defaultapps.android_cryptocurrency_prices.ui.detailed.DetailedActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +28,8 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private int changeFlag = 1;
     private boolean isLoadingAdded = false;
 
-    CoinsAdapter() {
+    CoinsAdapter(MainContract.MainView mainView) {
+        this.mainView = mainView;
         coins = new ArrayList<>();
     }
 
