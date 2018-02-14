@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -36,8 +37,11 @@ public class NetworkService {
     }
 
     private OkHttpClient provideOkHttpClient() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
         return new OkHttpClient.Builder()
                 .connectTimeout(15, TimeUnit.SECONDS)
+                .addInterceptor(logging)
                 .build();
     }
 
