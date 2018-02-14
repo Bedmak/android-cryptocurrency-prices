@@ -7,6 +7,8 @@ import com.defaultapps.android_cryptocurrency_prices.ui.base.BasePresenter;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -14,15 +16,16 @@ import timber.log.Timber;
 
 public class DetailedResponsePresenterImpl extends BasePresenter<DetailedContract.DetailedView> implements DetailedContract.DetailedResponsePresenter {
 
-    private final CryptocurrencyOverviewImpl cryptoOverview;
+    private final CryptocurrencyOverviewImpl cryptocurrencyOverview;
 
-    DetailedResponsePresenterImpl() {
-        cryptoOverview = new CryptocurrencyOverviewImpl();
+    @Inject
+    DetailedResponsePresenterImpl(CryptocurrencyOverviewImpl cryptocurrencyOverview) {
+        this.cryptocurrencyOverview = cryptocurrencyOverview;
     }
 
     @Override
     public void overview(int start) {
-        /*cryptoOverview.getCoins(start, 1)
+        cryptocurrencyOverview.getCoins(start, 1)
                 .doOnSubscribe(disposable -> getCompositeDisposable().add(disposable))
                 .subscribe(new SingleObserver<List<CoinModel>>() {
                     @Override
@@ -42,7 +45,7 @@ public class DetailedResponsePresenterImpl extends BasePresenter<DetailedContrac
                     public void onError(Throwable e) {
                 Timber.e(e);
             }
-        });*/
+        });
     }
 
 }

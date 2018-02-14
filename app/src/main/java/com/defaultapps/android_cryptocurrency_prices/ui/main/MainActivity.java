@@ -13,10 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.defaultapps.android_cryptocurrency_prices.App;
 import com.defaultapps.android_cryptocurrency_prices.R;
 import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
-import com.defaultapps.android_cryptocurrency_prices.di.component.DaggerResponsePresenterComponent;
-import com.defaultapps.android_cryptocurrency_prices.di.component.ResponsePresenterComponent;
+
 import com.defaultapps.android_cryptocurrency_prices.ui.base.BaseActivity;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.Presenter;
 import com.defaultapps.android_cryptocurrency_prices.ui.detailed.DetailedActivity;
@@ -24,6 +24,8 @@ import com.defaultapps.android_cryptocurrency_prices.ui.detailed.DetailedActivit
 import java.net.SocketTimeoutException;
 import java.util.List;
 
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +50,8 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    private ResponsePresenterImpl presenter;
+    @Inject
+    ResponsePresenterImpl presenter;
 
     private CoinsAdapter coinsAdapter;
 
@@ -60,8 +63,7 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ResponsePresenterComponent component = DaggerResponsePresenterComponent.create();
-        presenter = component.responsePresenterImpl();
+        ((App) getApplicationContext()).getComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);

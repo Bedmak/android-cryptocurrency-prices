@@ -2,7 +2,6 @@ package com.defaultapps.android_cryptocurrency_prices.data.overview;
 
 import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
 import com.defaultapps.android_cryptocurrency_prices.data.network.CoinApi;
-import com.defaultapps.android_cryptocurrency_prices.data.network.NetworkService;
 
 import java.util.List;
 
@@ -16,17 +15,17 @@ import timber.log.Timber;
 
 public class CryptocurrencyOverviewImpl implements CryptocurrencyOverview {
 
-    private final NetworkService networkService;
+    private CoinApi coinApi;
 
     @Inject
-    public CryptocurrencyOverviewImpl(NetworkService networkService) {
-        this.networkService = networkService;
+    CryptocurrencyOverviewImpl(CoinApi coinApi) {
+        this.coinApi = coinApi;
     }
 
     @Override
     public Single<List<CoinModel>> getCoins(int start, int lim) {
         Timber.d("getCoins");
-        return networkService.getCoinApi().getListCryptocurrency(start, lim)
+        return coinApi.getListCryptocurrency(start, lim)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

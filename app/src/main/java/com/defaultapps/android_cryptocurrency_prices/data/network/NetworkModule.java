@@ -4,39 +4,36 @@ import com.defaultapps.android_cryptocurrency_prices.data.utils.Constants;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import dagger.Module;
+import dagger.Provides;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@Singleton
-public class NetworkService {
+@Module
+public class NetworkModule {
 
-    private Retrofit retrofit;
-
-    @Inject
-    public NetworkService() {
-        retrofit = getRetrofit();
-    }
-
-    public CoinApi getCoinApi() {
+    @Singleton
+    @Provides
+    CoinApi provideCoinApi() {
+        Retrofit retrofit = buildRetrofit();
         return retrofit.create(CoinApi.class);
     }
 
-    private Retrofit getRetrofit() {
+    private Retrofit buildRetrofit() {
        return new Retrofit.Builder()
                 .baseUrl(Constants.BASE_COIN_URL)
-                .client(provideOkHttpClient())
+                .client(buildOkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 
-    private OkHttpClient provideOkHttpClient() {
+    private OkHttpClient buildOkHttpClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
         return new OkHttpClient.Builder()
