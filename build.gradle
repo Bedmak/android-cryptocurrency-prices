@@ -34,4 +34,5 @@ ext {
     rxAndroid = '2.0.1'
     timber = '4.6.0'
     glide = '4.5.0'
+    dagger2 = '2.14.1'
 }

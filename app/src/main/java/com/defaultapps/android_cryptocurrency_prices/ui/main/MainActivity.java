@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.defaultapps.android_cryptocurrency_prices.R;
 import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
+import com.defaultapps.android_cryptocurrency_prices.di.component.DaggerResponsePresenterComponent;
+import com.defaultapps.android_cryptocurrency_prices.di.component.ResponsePresenterComponent;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.BaseActivity;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.Presenter;
 import com.defaultapps.android_cryptocurrency_prices.ui.detailed.DetailedActivity;
@@ -48,7 +50,8 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        presenter = new ResponsePresenterImpl();
+        ResponsePresenterComponent component = DaggerResponsePresenterComponent.create();
+        presenter = component.responsePresenterImpl();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
