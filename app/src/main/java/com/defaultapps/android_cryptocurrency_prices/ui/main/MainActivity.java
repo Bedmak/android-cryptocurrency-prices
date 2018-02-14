@@ -9,7 +9,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,21 +25,32 @@ import java.net.SocketTimeoutException;
 import java.util.List;
 
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 
 public class MainActivity extends BaseActivity implements MainContract.MainView {
 
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+
+    @BindView(R.id.coinsRecyclerView)
+    RecyclerView coinsRecyclerView;
+
+    @BindView(R.id.errorLayout)
+    LinearLayout errorLayout;
+
+    @BindView(R.id.error_txt)
+    TextView errorTextView;
+
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     private ResponsePresenterImpl presenter;
 
-    private ProgressBar progressBar;
     private CoinsAdapter coinsAdapter;
-    private RecyclerView coinsRecyclerView;
-    private LinearLayoutManager linearLayoutManager;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private LinearLayout errorLayout;
-    private TextView errorTextView;
-    private Button btnRetry;
 
     private static final int PAGE_START = 0;
     private boolean isLoading = false;
@@ -54,19 +64,15 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
         presenter = component.responsePresenterImpl();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         initViews();
         presenter.overview(currentPage);
     }
 
     private void initViews() {
-        coinsRecyclerView = findViewById(R.id.coinsRecyclerView);
-        progressBar = findViewById(R.id.progressBar);
-        errorLayout = findViewById(R.id.errorLayout);
-        errorTextView = findViewById(R.id.error_txt);
-        btnRetry = findViewById(R.id.buttonRetry);
 
         coinsAdapter = new CoinsAdapter(this);
-        linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         coinsRecyclerView.setLayoutManager(linearLayoutManager);
         coinsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         coinsRecyclerView.setAdapter(coinsAdapter);
@@ -95,9 +101,12 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
             }
         });
 
-        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(() -> presenter.overview(PAGE_START));
-        btnRetry.setOnClickListener(view -> presenter.overview(PAGE_START));
+    }
+
+    @OnClick(R.id.buttonRetry)
+    void onRetryClick() {
+        presenter.overview(PAGE_START);
     }
 
     @Override

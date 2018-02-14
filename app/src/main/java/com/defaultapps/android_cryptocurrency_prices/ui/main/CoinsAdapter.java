@@ -18,6 +18,8 @@ import com.defaultapps.android_cryptocurrency_prices.data.utils.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -35,19 +37,15 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public class CoinsViewHolder extends RecyclerView.ViewHolder {
 
-        LinearLayout coinContainer;
-        ImageView coinImg;
-        TextView coinName;
-        TextView coinPrice;
-        TextView coinChange;
+        @BindView(R.id.coinContainer) LinearLayout coinContainer;
+        @BindView(R.id.coinImg) ImageView coinImg;
+        @BindView(R.id.coinName) TextView coinName;
+        @BindView(R.id.coinPrice) TextView coinPrice;
+        @BindView(R.id.coinChange) TextView coinChange;
 
         CoinsViewHolder(View v) {
             super(v);
-            coinContainer = v.findViewById(R.id.coinContainer);
-            coinImg = v.findViewById(R.id.coinImg);
-            coinName = v.findViewById(R.id.coinName);
-            coinPrice = v.findViewById(R.id.coinPrice);
-            coinChange = v.findViewById(R.id.coinChange);
+            ButterKnife.bind(this, v);
         }
     }
 

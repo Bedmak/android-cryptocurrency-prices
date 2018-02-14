@@ -36,4 +36,5 @@ ext {
     glide = '4.5.0'
     dagger2 = '2.14.1'
     okHttpVersion = '3.9.0'
+    butterKnife = '8.8.1'
 }
