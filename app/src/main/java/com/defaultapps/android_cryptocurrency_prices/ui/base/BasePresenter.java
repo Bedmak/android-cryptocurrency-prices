@@ -1,5 +1,6 @@
 package com.defaultapps.android_cryptocurrency_prices.ui.base;
 
+
 import io.reactivex.disposables.CompositeDisposable;
 
 public abstract class BasePresenter<View extends MvpView> implements Presenter<View> {
@@ -7,10 +8,13 @@ public abstract class BasePresenter<View extends MvpView> implements Presenter<V
     private View view;
     private CompositeDisposable compositeDisposable;
 
+    public BasePresenter(CompositeDisposable compositeDisposable) {
+        this.compositeDisposable = compositeDisposable;
+    }
+
     @Override
     public void onAttach(View view) {
         this.view = view;
-        compositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -19,7 +23,7 @@ public abstract class BasePresenter<View extends MvpView> implements Presenter<V
         view = null;
     }
 
-    public View getView() { return view; }
+    protected View getView() { return view; }
 
-    public CompositeDisposable getCompositeDisposable() { return compositeDisposable; }
+    protected CompositeDisposable getCompositeDisposable() { return compositeDisposable; }
 }

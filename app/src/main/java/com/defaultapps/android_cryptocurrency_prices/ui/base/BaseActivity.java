@@ -9,7 +9,6 @@ import com.defaultapps.android_cryptocurrency_prices.di.component.ActivityCompon
 import com.defaultapps.android_cryptocurrency_prices.di.component.DaggerActivityComponent;
 import com.defaultapps.android_cryptocurrency_prices.di.module.ActivityModule;
 
-import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity implements MvpView {
 

@@ -2,28 +2,32 @@ package com.defaultapps.android_cryptocurrency_prices.di.module;
 
 
 import android.app.Activity;
-import android.content.Context;
 
-import com.defaultapps.android_cryptocurrency_prices.di.ActivityContext;
 import com.defaultapps.android_cryptocurrency_prices.di.scope.PerActivity;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.MvpView;
-import com.defaultapps.android_cryptocurrency_prices.ui.main.MainContract;
 
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.disposables.CompositeDisposable;
 
 @Module
 public class ActivityModule {
-    private MvpView mvpView;
+    private Activity activity;
 
-    public ActivityModule(MvpView mvpView) {
-        this.mvpView = mvpView;
+    public ActivityModule(Activity activity) {
+        this.activity = activity;
     }
 
     @PerActivity
     @Provides
     MvpView provideMvpView() {
-        return mvpView;
+        return (MvpView) activity;
+    }
+
+    @PerActivity
+    @Provides
+    CompositeDisposable provideCompositeDisposable() {
+        return new CompositeDisposable();
     }
 }

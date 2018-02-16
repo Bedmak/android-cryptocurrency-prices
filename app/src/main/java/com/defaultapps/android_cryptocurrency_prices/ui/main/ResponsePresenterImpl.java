@@ -6,6 +6,7 @@ import com.defaultapps.android_cryptocurrency_prices.ui.base.BasePresenter;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
 public class ResponsePresenterImpl extends BasePresenter<MainContract.MainView> implements MainContract.ResponsePresenter {                                   // MVP - Presenter
@@ -13,7 +14,9 @@ public class ResponsePresenterImpl extends BasePresenter<MainContract.MainView> 
     private final CryptocurrencyOverviewImpl cryptocurrencyOverview;
 
     @Inject
-    ResponsePresenterImpl(CryptocurrencyOverviewImpl cryptocurrencyOverview) {
+    ResponsePresenterImpl(CryptocurrencyOverviewImpl cryptocurrencyOverview,
+                          CompositeDisposable compositeDisposable) {
+        super(compositeDisposable);
         this.cryptocurrencyOverview = cryptocurrencyOverview;
     }
 
