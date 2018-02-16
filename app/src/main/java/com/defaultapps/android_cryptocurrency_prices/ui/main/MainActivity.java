@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.defaultapps.android_cryptocurrency_prices.App;
+
 import com.defaultapps.android_cryptocurrency_prices.R;
 import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
 
@@ -53,7 +53,8 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
     @Inject
     ResponsePresenterImpl presenter;
 
-    private CoinsAdapter coinsAdapter;
+    @Inject
+    CoinsAdapter coinsAdapter;
 
     private static final int PAGE_START = 0;
     private boolean isLoading = false;
@@ -63,17 +64,18 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ((App) getApplicationContext()).getComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        initViews();
+        initRecyclerView();
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.overview(PAGE_START));
         presenter.overview(currentPage);
     }
 
-    private void initViews() {
 
-        coinsAdapter = new CoinsAdapter(this);
+
+    private void initRecyclerView() {
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         coinsRecyclerView.setLayoutManager(linearLayoutManager);
         coinsRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -103,7 +105,6 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
             }
         });
 
-        swipeRefreshLayout.setOnRefreshListener(() -> presenter.overview(PAGE_START));
     }
 
     @OnClick(R.id.buttonRetry)
@@ -129,6 +130,11 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
     @Override
     protected Presenter providePresenter() {
         return presenter;
+    }
+
+    @Override
+    public void inject() {
+        getActivityComponent().inject(this);
     }
 
     @Override

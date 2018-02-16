@@ -14,9 +14,12 @@ import com.defaultapps.android_cryptocurrency_prices.R;
 import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
 import com.defaultapps.android_cryptocurrency_prices.data.utils.ChangeConverter;
 import com.defaultapps.android_cryptocurrency_prices.data.utils.Constants;
+import com.defaultapps.android_cryptocurrency_prices.ui.base.MvpView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,8 +33,9 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private int changeFlag = 1;
     private boolean isLoadingAdded = false;
 
-    CoinsAdapter(MainContract.MainView mainView) {
-        this.mainView = mainView;
+    @Inject
+    CoinsAdapter(MvpView mvpView) {
+        this.mainView = (MainContract.MainView) mvpView;
         coins = new ArrayList<>();
     }
 

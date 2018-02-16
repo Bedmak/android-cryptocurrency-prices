@@ -11,6 +11,7 @@ import com.defaultapps.android_cryptocurrency_prices.ui.base.Presenter;
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class DetailedActivity extends BaseActivity implements DetailedContract.DetailedView {
@@ -22,15 +23,20 @@ public class DetailedActivity extends BaseActivity implements DetailedContract.D
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ((App) getApplicationContext()).getComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed);
+        ButterKnife.bind(this);
         presenter.overview(getIntent().getIntExtra(COIN_NO, 0));
     }
 
     @Override
     protected Presenter providePresenter() {
         return presenter;
+    }
+
+    @Override
+    public void inject() {
+        getActivityComponent().inject(this);
     }
 
     @Override

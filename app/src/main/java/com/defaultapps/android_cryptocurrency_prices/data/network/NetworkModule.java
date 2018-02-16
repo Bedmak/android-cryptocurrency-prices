@@ -19,21 +19,25 @@ public class NetworkModule {
 
     @Singleton
     @Provides
-    CoinApi provideCoinApi() {
-        Retrofit retrofit = buildRetrofit();
+    CoinApi provideCoinApi(Retrofit retrofit) {
         return retrofit.create(CoinApi.class);
     }
 
-    private Retrofit buildRetrofit() {
+    @Singleton
+    @Provides
+    Retrofit provideRetrofit(OkHttpClient okHttpClient) {
        return new Retrofit.Builder()
                 .baseUrl(Constants.BASE_COIN_URL)
-                .client(buildOkHttpClient())
+                .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 
-    private OkHttpClient buildOkHttpClient() {
+
+    @Singleton
+    @Provides
+    OkHttpClient provideOkHttpClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
         return new OkHttpClient.Builder()
