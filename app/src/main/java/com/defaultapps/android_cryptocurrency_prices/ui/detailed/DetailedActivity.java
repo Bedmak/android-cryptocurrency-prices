@@ -24,14 +24,17 @@ public class DetailedActivity extends BaseActivity implements DetailedContract.D
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detailed);
-        ButterKnife.bind(this);
         presenter.overview(getIntent().getIntExtra(COIN_NO, 0));
     }
 
     @Override
     protected Presenter providePresenter() {
         return presenter;
+    }
+
+    @Override
+    protected int provideLayout() {
+        return R.layout.activity_detailed;
     }
 
     @Override

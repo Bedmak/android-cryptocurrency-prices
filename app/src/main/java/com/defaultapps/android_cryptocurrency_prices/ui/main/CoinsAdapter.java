@@ -1,5 +1,6 @@
 package com.defaultapps.android_cryptocurrency_prices.ui.main;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.defaultapps.android_cryptocurrency_prices.R;
 import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
 import com.defaultapps.android_cryptocurrency_prices.data.utils.ChangeConverter;
 import com.defaultapps.android_cryptocurrency_prices.data.utils.Constants;
+import com.defaultapps.android_cryptocurrency_prices.di.ActivityContext;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.MvpView;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import timber.log.Timber;
 
 public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private Context context;
     private MainContract.MainView mainView;
     private final List<CoinModel> coins;
 
@@ -34,7 +37,8 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private boolean isLoadingAdded = false;
 
     @Inject
-    CoinsAdapter(MvpView mvpView) {
+    CoinsAdapter(@ActivityContext Context context, MvpView mvpView) {
+        this.context = context;
         this.mainView = (MainContract.MainView) mvpView;
         coins = new ArrayList<>();
     }
@@ -63,7 +67,7 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder viewHolder = null;
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        LayoutInflater inflater = LayoutInflater.from(context);
         switch (viewType) {
             case Constants.ITEM:
                 viewHolder = getCoinsViewHolder(parent,inflater);
@@ -102,7 +106,7 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             case Constants.ITEM:
                final CoinsViewHolder coinsVH = (CoinsViewHolder) holder;
                 Glide
-                        .with(holder.itemView)
+                        .with(context)
                         .load(Constants.IMAGE_BASE_URL + coin.getId() + Constants.IMAGE_FORMAT)
                         .into(coinsVH.coinImg);
 

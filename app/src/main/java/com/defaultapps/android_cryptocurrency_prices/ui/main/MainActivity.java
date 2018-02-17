@@ -1,6 +1,5 @@
 package com.defaultapps.android_cryptocurrency_prices.ui.main;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -56,6 +55,9 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
     @Inject
     CoinsAdapter coinsAdapter;
 
+    @Inject
+    ConnectivityManager connectivityManager;
+
     private static final int PAGE_START = 0;
     private boolean isLoading = false;
     private boolean isLastPage = false;
@@ -65,14 +67,10 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
         initRecyclerView();
         swipeRefreshLayout.setOnRefreshListener(() -> presenter.overview(PAGE_START));
         presenter.overview(currentPage);
     }
-
-
 
     private void initRecyclerView() {
 
@@ -133,6 +131,11 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
     }
 
     @Override
+    protected int provideLayout() {
+        return R.layout.activity_main;
+    }
+
+    @Override
     public void inject() {
         getActivityComponent().inject(this);
     }
@@ -167,15 +170,10 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
         startActivity(intent);
     }
 
-    private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null;
-    }
-
     private String fetchErrorMessage(Throwable throwable) {
         String errorMsg = getResources().getString(R.string.error_msg_unknown);
-
-        if (!isNetworkConnected()) {
+        boolean isNetworkConnected = connectivityManager.getActiveNetworkInfo() != null;
+        if (!isNetworkConnected) {
             errorMsg = getResources().getString(R.string.error_msg_no_internet);
         } else if (throwable instanceof SocketTimeoutException) {
             errorMsg = getResources().getString(R.string.error_msg_timeout);
