@@ -4,7 +4,7 @@ package com.defaultapps.android_cryptocurrency_prices.data.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CoinModel {
+public class CoinResponse {
 
     @SerializedName("id")
     @Expose
@@ -21,6 +21,12 @@ public class CoinModel {
     @SerializedName("price_usd")
     @Expose
     private String priceUsd;
+    @SerializedName("price_eur")
+    @Expose
+    private String priceEur;
+    @SerializedName("price_rub")
+    @Expose
+    private String priceRub;
     @SerializedName("price_btc")
     @Expose
     private String priceBtc;
@@ -87,6 +93,22 @@ public class CoinModel {
 
     public void setPriceUsd(String priceUsd) {
         this.priceUsd = priceUsd;
+    }
+
+    public void setPriceEur(String priceEur) {
+        this.priceEur = priceEur;
+    }
+
+    public String getPriceEur() {
+        return priceEur;
+    }
+
+    public void setPriceRub(String priceRub) {
+        this.priceRub = priceRub;
+    }
+
+    public String getPriceRub() {
+        return priceRub;
     }
 
     public String getPriceBtc() {

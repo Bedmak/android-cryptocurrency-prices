@@ -11,8 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.defaultapps.android_cryptocurrency_prices.domain.Coin;
 import com.defaultapps.android_cryptocurrency_prices.R;
-import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
 import com.defaultapps.android_cryptocurrency_prices.data.utils.ChangeConverter;
 import com.defaultapps.android_cryptocurrency_prices.data.utils.Constants;
 import com.defaultapps.android_cryptocurrency_prices.di.ActivityContext;
@@ -31,7 +31,7 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private Context context;
     private MainContract.MainView mainView;
-    private final List<CoinModel> coins;
+    private final List<Coin> coins;
 
     private int changeFlag = 1;
     private boolean isLoadingAdded = false;
@@ -94,13 +94,14 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
             notifyDataSetChanged();
         });
-        vh.coinContainer.setOnClickListener(view -> mainView.showDetailed(vh.getAdapterPosition()));
+        vh.coinContainer.setOnClickListener(view ->
+                mainView.showDetailed(vh.getAdapterPosition(), coins.get(vh.getAdapterPosition()).getName()));
         return vh;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        CoinModel coin = coins.get(position);
+        Coin coin = coins.get(position);
 
         switch (getItemViewType(position)) {
             case Constants.ITEM:
@@ -111,13 +112,13 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         .into(coinsVH.coinImg);
 
                 coinsVH.coinName.setText(String.format("%s (%s)", coin.getName(), coin.getSymbol()));
-                coinsVH.coinPrice.setText(coin.getPriceUsd());
+                coinsVH.coinPrice.setText(String.format("%s", coin.getPrice()));
                 if (changeFlag == 1) {
-                    coinsVH.coinChange.setText(String.format("%s %%", coin.getPercentChange1h()));
+                    coinsVH.coinChange.setText(String.format("%s %%", coin.getPercentChange()));
                 } else {
-                    coinsVH.coinChange.setText(ChangeConverter.getUsdChangesPrices(coin));
+                    coinsVH.coinChange.setText(ChangeConverter.getChangesPrices(coin.getPrice(), coin.getPercentChange()));
                 }
-                if (Float.parseFloat(coin.getPercentChange1h()) > 0) {
+                if (coin.getPercentChange() > 0) {
                     coinsVH.coinChange.setBackgroundColor(Color.GREEN);
                 } else {
                     coinsVH.coinChange.setBackgroundColor(Color.RED);
@@ -141,18 +142,18 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     /*
     Helpers methods
      */
-    public void add(CoinModel coin) {
+    public void add(Coin coin) {
         coins.add(coin);
         notifyItemInserted(coins.size() - 1);
     }
 
-    public void addAll(List<CoinModel> cList) {
-        for (CoinModel c : cList) {
+    public void addAll(List<Coin> cList) {
+        for (Coin c : cList) {
             add(c);
         }
     }
 
-    public void remove(CoinModel coin) {
+    public void remove(Coin coin) {
         int position = coins.indexOf(coin);
         if (position > -1) {
             coins.remove(position);
@@ -173,22 +174,22 @@ public class CoinsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new CoinModel());
+        add(new Coin());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
         int position = coins.size() - 1;
-        CoinModel item = getItem(position);
+        Coin coin = getItem(position);
 
-        if (item != null) {
+        if (coin != null) {
             coins.remove(position);
             notifyItemRemoved(position);
         }
     }
 
-    public CoinModel getItem(int position) {
+    public Coin getItem(int position) {
         return coins.get(position);
     }
 }

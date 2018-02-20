@@ -11,4 +11,10 @@ public class Constants {
     public static final String IMAGE_BASE_URL = "https://files.coinmarketcap.com/static/img/coins/128x128/";
     public static final String IMAGE_FORMAT = ".png";
 
+    public static final String COIN_NO = "coin_number";
+    public static final String COIN_NAME = "coin_name";
+
+    public static final String PREFERENCE_CURRENCIES = "list_currencies";
+    public static final String PREFERENCE_CHANGES = "list_changes";
+
 }

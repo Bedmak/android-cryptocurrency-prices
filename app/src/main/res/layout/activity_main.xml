@@ -3,8 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.defaultapps.android_cryptocurrency_prices.ui.main.MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:title="@string/app_name" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,6 +38,7 @@
             android:text="@string/coin_price" />
 
         <TextView
+            android:id="@+id/timeChange"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"

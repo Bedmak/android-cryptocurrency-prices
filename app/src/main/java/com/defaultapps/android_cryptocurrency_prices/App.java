@@ -1,6 +1,7 @@
 package com.defaultapps.android_cryptocurrency_prices;
 
 import android.app.Application;
+import android.preference.PreferenceManager;
 
 import com.defaultapps.android_cryptocurrency_prices.di.component.ApplicationComponent;
 import com.defaultapps.android_cryptocurrency_prices.di.component.DaggerApplicationComponent;
@@ -16,6 +17,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        PreferenceManager.setDefaultValues(this, R.xml.preference, false);
         initDaggerAppComponent();
         applicationComponent.inject(this);
         Timber.plant(new Timber.DebugTree());

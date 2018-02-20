@@ -5,7 +5,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context="com.defaultapps.android_cryptocurrency_prices.ui.detailed.DetailedActivity">
+    tools:context="com.defaultapps.android_cryptocurrency_prices.ui.detailed.DetailActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/detailed_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
 
     <TextView
         android:id="@+id/detailedCoinName"

@@ -7,18 +7,23 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
+import com.defaultapps.android_cryptocurrency_prices.data.utils.PreferenceRepository;
+import com.defaultapps.android_cryptocurrency_prices.domain.Coin;
 import com.defaultapps.android_cryptocurrency_prices.R;
-import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
 
+import com.defaultapps.android_cryptocurrency_prices.data.utils.Constants;
+import com.defaultapps.android_cryptocurrency_prices.ui.detailed.DetailActivity;
+import com.defaultapps.android_cryptocurrency_prices.ui.settings.SettingsActivity;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.BaseActivity;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.Presenter;
-import com.defaultapps.android_cryptocurrency_prices.ui.detailed.DetailedActivity;
 
 import java.net.SocketTimeoutException;
 import java.util.List;
@@ -27,15 +32,20 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
 
 
 public class MainActivity extends BaseActivity implements MainContract.MainView {
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+
+    @BindView(R.id.timeChange)
+    TextView timeChange;
 
     @BindView(R.id.coinsRecyclerView)
     RecyclerView coinsRecyclerView;
@@ -56,6 +66,9 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
     CoinsAdapter coinsAdapter;
 
     @Inject
+    PreferenceRepository preferenceRepository;
+
+    @Inject
     ConnectivityManager connectivityManager;
 
     private static final int PAGE_START = 0;
@@ -67,9 +80,26 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initToolbar();
         initRecyclerView();
         swipeRefreshLayout.setOnRefreshListener(() -> presenter.overview(PAGE_START));
         presenter.overview(currentPage);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        timeChange.setText(getPercentChange());
+    }
+
+    private void initToolbar() {
+        toolbar.inflateMenu(R.menu.settings_menu);
+        Menu menu = toolbar.getMenu();
+        menu.findItem(R.id.action_settings).setOnMenuItemClickListener(menuItem -> {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        });
     }
 
     private void initRecyclerView() {
@@ -105,13 +135,26 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
 
     }
 
+    private int getPercentChange() {
+        switch (preferenceRepository.getChangesType()) {
+            case "1 hour":
+                return R.string.coin_change_1h;
+            case "24 hours":
+                return R.string.coin_change_24h;
+            case "7 days":
+                return R.string.coin_change_7d;
+            default:
+                return 0;
+        }
+    }
+
     @OnClick(R.id.buttonRetry)
     void onRetryClick() {
         presenter.overview(PAGE_START);
     }
 
     @Override
-    public void showCoins(List<CoinModel> coins) {
+    public void showCoins(List<Coin> coins) {
         Timber.d("showCoins %s", currentPage);
         swipeRefreshLayout.setRefreshing(false);
         if (currentPage == 0) {
@@ -123,6 +166,14 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
         coinsAdapter.addAll(coins);
         if (currentPage <= TOTAL_PAGES) coinsAdapter.addLoadingFooter();
         else isLastPage = true;
+    }
+
+    @Override
+    public void updateDisplay() {
+        coinsAdapter.clear();
+        progressBar.setVisibility(View.VISIBLE);
+        currentPage = PAGE_START;
+        presenter.overview(currentPage);
     }
 
     @Override
@@ -163,10 +214,11 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
     }
 
     @Override
-    public void showDetailed(int position) {
+    public void showDetailed(int position, String name) {
         Timber.d("onClick - " + position + " position");
-        Intent intent = new Intent(this, DetailedActivity.class);
-        intent.putExtra(DetailedActivity.COIN_NO, position);
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(Constants.COIN_NAME, name);
+        intent.putExtra(Constants.COIN_NO, position);
         startActivity(intent);
     }
 

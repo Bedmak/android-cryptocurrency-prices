@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Display">
+
+        <ListPreference
+            android:key="list_currencies"
+            android:title="Currency"
+            android:entries="@array/currencies"
+            android:entryValues="@array/currencies"
+            android:defaultValue="USD" />
+
+        <ListPreference
+            android:key="list_changes"
+            android:title="Changes"
+            android:summary="1h"
+            android:entries="@array/changes"
+            android:entryValues="@array/changes"
+            android:defaultValue="1 hour"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

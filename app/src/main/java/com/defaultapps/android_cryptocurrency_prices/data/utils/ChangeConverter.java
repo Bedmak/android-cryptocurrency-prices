@@ -1,12 +1,9 @@
 package com.defaultapps.android_cryptocurrency_prices.data.utils;
 
-import com.defaultapps.android_cryptocurrency_prices.data.models.CoinModel;
 
 public class ChangeConverter {
 
-    public static String getUsdChangesPrices(CoinModel coin) {
-        float price = Float.parseFloat(coin.getPriceUsd());
-        float percents = Float.parseFloat(coin.getPercentChange1h());
+    public static String getChangesPrices(float price, float percents) {
         float changePrice = price - (price / 100) * (100 - percents);
         return Float.toString(round(changePrice));
     }

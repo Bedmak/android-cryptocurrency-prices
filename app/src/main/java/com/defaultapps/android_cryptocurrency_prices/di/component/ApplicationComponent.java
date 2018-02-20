@@ -8,6 +8,7 @@ import com.defaultapps.android_cryptocurrency_prices.App;
 import com.defaultapps.android_cryptocurrency_prices.data.SchedulerProvider;
 import com.defaultapps.android_cryptocurrency_prices.data.network.CoinApi;
 import com.defaultapps.android_cryptocurrency_prices.data.network.NetworkModule;
+import com.defaultapps.android_cryptocurrency_prices.data.utils.PreferenceRepository;
 import com.defaultapps.android_cryptocurrency_prices.di.ApplicationContext;
 import com.defaultapps.android_cryptocurrency_prices.di.module.ApplicationModule;
 
@@ -30,5 +31,6 @@ public interface ApplicationComponent {
     ConnectivityManager connectivityManager();
     CoinApi coinApi();
     SchedulerProvider schedulerProvider();
+    PreferenceRepository preferenceRepository();
 
 }

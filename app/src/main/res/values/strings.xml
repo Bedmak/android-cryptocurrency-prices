@@ -1,11 +1,15 @@
 <resources>
-    <string name="app_name">android-cryptocurrency-prices</string>
+    <string name="app_name">CryptocurrencyMarket</string>
     <string name="coin_name">Coin Name</string>
     <string name="coin_price">Price</string>
     <string name="coin_change_1h">1h</string>
+    <string name="coin_change_24h">24h</string>
+    <string name="coin_change_7d">7d</string>
     <string name="coin_logo">coin logo</string>
     <string name="error_msg">Sorry! Couldn\'t fetch coins.</string>
     <string name="error_msg_no_internet">Not connected to internet</string>
     <string name="error_msg_timeout">The server took too long to respond</string>
     <string name="error_msg_unknown">An unexpected error occurred</string>
+    <string name="settings">Settings</string>
+
 </resources>
