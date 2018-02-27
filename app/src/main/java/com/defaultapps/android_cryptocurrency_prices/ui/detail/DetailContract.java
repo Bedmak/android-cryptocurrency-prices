@@ -1,4 +1,4 @@
-package com.defaultapps.android_cryptocurrency_prices.ui.detailed;
+package com.defaultapps.android_cryptocurrency_prices.ui.detail;
 
 import com.defaultapps.android_cryptocurrency_prices.data.models.CoinResponse;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.MvpView;

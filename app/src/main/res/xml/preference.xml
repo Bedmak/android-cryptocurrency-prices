@@ -14,7 +14,6 @@
         <ListPreference
             android:key="list_changes"
             android:title="Changes"
-            android:summary="1h"
             android:entries="@array/changes"
             android:entryValues="@array/changes"
             android:defaultValue="1 hour"/>

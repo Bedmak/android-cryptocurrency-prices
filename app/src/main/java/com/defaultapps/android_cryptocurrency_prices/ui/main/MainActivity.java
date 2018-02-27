@@ -20,7 +20,7 @@ import com.defaultapps.android_cryptocurrency_prices.domain.Coin;
 import com.defaultapps.android_cryptocurrency_prices.R;
 
 import com.defaultapps.android_cryptocurrency_prices.data.utils.Constants;
-import com.defaultapps.android_cryptocurrency_prices.ui.detailed.DetailActivity;
+import com.defaultapps.android_cryptocurrency_prices.ui.detail.DetailActivity;
 import com.defaultapps.android_cryptocurrency_prices.ui.settings.SettingsActivity;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.BaseActivity;
 import com.defaultapps.android_cryptocurrency_prices.ui.base.Presenter;
@@ -81,15 +81,10 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initToolbar();
+        timeChange.setText(getPercentChange());
         initRecyclerView();
         swipeRefreshLayout.setOnRefreshListener(() -> presenter.overview(PAGE_START));
         presenter.overview(currentPage);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        timeChange.setText(getPercentChange());
     }
 
     private void initToolbar() {
@@ -173,6 +168,7 @@ public class MainActivity extends BaseActivity implements MainContract.MainView 
         coinsAdapter.clear();
         progressBar.setVisibility(View.VISIBLE);
         currentPage = PAGE_START;
+        timeChange.setText(getPercentChange());
         presenter.overview(currentPage);
     }
 

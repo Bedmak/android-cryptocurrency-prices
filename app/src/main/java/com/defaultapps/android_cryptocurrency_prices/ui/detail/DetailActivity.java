@@ -1,4 +1,4 @@
-package com.defaultapps.android_cryptocurrency_prices.ui.detailed;
+package com.defaultapps.android_cryptocurrency_prices.ui.detail;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;

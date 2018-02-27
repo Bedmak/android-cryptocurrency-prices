@@ -57,7 +57,7 @@ public class CoinsMapper implements Function<List<CoinResponse>,List<Coin>> {
         switch (preferenceRepository.getChangesType()) {
             case "1 hour":
                 return Float.parseFloat(coinResponse.getPercentChange1h());
-            case "24 hour":
+            case "24 hours":
                 return Float.parseFloat(coinResponse.getPercentChange24h());
             case "7 days":
                 return Float.parseFloat(coinResponse.getPercentChange7d());
